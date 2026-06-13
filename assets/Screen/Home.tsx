@@ -2,6 +2,7 @@ import { TouchableOpacity, StyleSheet, Text, View, SafeAreaView, StatusBar, Dime
 import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import BotaoIniciar from '../Components/BotaoIniciar'
+import { solicitarPermissao, configurarCanalAndroid, agendarNotificacao } from '../Services/NotificationService';
 
 const { width, height } = Dimensions.get('window')
 
@@ -21,6 +22,11 @@ const Home = () => {
       else if (horas < 18) setSaudacao('Boa tarde ☀️')
       else setSaudacao('Boa noite 🌙')
     }
+     const setupNotificacoes = async () => {
+    await configurarCanalAndroid();
+    await solicitarPermissao();
+  };
+  setupNotificacoes()
 
     atualizarHora()
     const interval = setInterval(atualizarHora, 60000) // atualiza a cada minuto

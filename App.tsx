@@ -13,6 +13,7 @@ import TelaValorHora from './assets/Screen/TelaValorHora';
 import TelaConversorTempo from './assets/Screen/TelaConversorTempo';
 import TelaJurosCompostos from './assets/Screen/TelaJurosCompostos';
 import TelaMonitorRio from './assets/Screen/TelaMonitorRio';
+import TelaFontePC from './assets/Screen/TelaFontePC';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -27,7 +28,7 @@ export type RootStackParamList = {
   TelaConversorTempo:undefined
   TelaJurosCompostos:undefined
   TelaMonitorRio:undefined
-
+  Fonte:undefined
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -76,10 +77,11 @@ export default function App() {
           component={Menu} 
            options={{ headerShown: false }} 
         />
-<Stack.Screen name="TelaValorHora" component={TelaValorHora} />
-<Stack.Screen name="TelaConversorTempo" component={TelaConversorTempo} />
-<Stack.Screen name="TelaJurosCompostos" component={TelaJurosCompostos} />
-<Stack.Screen name="TelaMonitorRio" component={TelaMonitorRio} />
+<Stack.Screen name="TelaValorHora" component={TelaValorHora}  options={{ headerShown: false }}/>
+<Stack.Screen name="TelaConversorTempo" component={TelaConversorTempo}  options={{ headerShown: false }}/>
+<Stack.Screen name="TelaJurosCompostos" component={TelaJurosCompostos}  options={{ headerShown: false }}/>
+<Stack.Screen name="TelaMonitorRio" component={TelaMonitorRio} options={{ headerShown: false }} />
+<Stack.Screen name="TelaFontePC" component={TelaFontePC} options={{ headerShown: false }} />
         
       </Stack.Navigator>
     </NavigationContainer>
