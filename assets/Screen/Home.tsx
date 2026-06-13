@@ -42,7 +42,7 @@ const Home = () => {
           <View style={styles.emojiContainer}>
             <Text style={styles.emoji}>🚀</Text>
           </View>
-          <Text style={styles.titulo}>MAX TOOLS BR</Text>
+          <Text style={styles.titulo}>Albertool Tools</Text>
           <Text style={styles.subtitulo}>Ferramentas profissionais</Text>
           
           <View style={styles.divider} />
@@ -80,7 +80,7 @@ const Home = () => {
         {/* Footer com versão */}
         <View style={styles.footer}>
           <Text style={styles.version}>Versão 0.0.1 Alpha</Text>
-          <Text style={styles.copyright}>© 2024 MAX TOOLS BR</Text>
+          <Text style={styles.copyright}>© 2026 Albertool Tools</Text>
         </View>
       </View>
     </SafeAreaView>
