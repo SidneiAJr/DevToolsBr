@@ -9,7 +9,6 @@
 ### 📈 APIs Financeiras
 - **Bitcoin** - Cotação atual via CoinGecko
 - **Dólar** - Cotação via Banco Central do Brasil
-- **Euro** - Cotação via AwesomeAPI
 - **Taxa Selic** - Dados oficiais do BCB
 
 ### 🌤️ Utilidades
@@ -33,6 +32,5 @@
 - TypeScript 5.9.2
 - Expo 52.0.0
 - React Navigation 7.x
-
 
 
