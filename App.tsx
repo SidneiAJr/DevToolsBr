@@ -14,6 +14,10 @@ import TelaConversorTempo from './assets/Screen/TelaConversorTempo';
 import TelaJurosCompostos from './assets/Screen/TelaJurosCompostos';
 import TelaMonitorRio from './assets/Screen/TelaMonitorRio';
 import TelaFontePC from './assets/Screen/TelaFontePC';
+import TelaCalculadoraImposto from './assets/Screen/TelaCalculadoraImposto';
+import TelaCustoCombustivel from './assets/Screen/TelaCustoCombustivel';
+
+
 
 export type RootStackParamList = {
   Home: undefined;
@@ -29,6 +33,8 @@ export type RootStackParamList = {
   TelaJurosCompostos:undefined
   TelaMonitorRio:undefined
   Fonte:undefined
+  combustivel: undefined
+  Imposto:undefined
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -82,6 +88,8 @@ export default function App() {
 <Stack.Screen name="TelaJurosCompostos" component={TelaJurosCompostos}  options={{ headerShown: false }}/>
 <Stack.Screen name="TelaMonitorRio" component={TelaMonitorRio} options={{ headerShown: false }} />
 <Stack.Screen name="TelaFontePC" component={TelaFontePC} options={{ headerShown: false }} />
+<Stack.Screen name="Telaimp" component={TelaCalculadoraImposto} options={{ headerShown: false }} />
+<Stack.Screen name="Telacumb" component={TelaCustoCombustivel} options={{ headerShown: false }} />
         
       </Stack.Navigator>
     </NavigationContainer>

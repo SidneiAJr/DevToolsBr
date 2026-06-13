@@ -12,6 +12,8 @@ const MenuOpcao = () => {
     { id: 4, nome: 'Valor por Hora', rota: 'TelaValorHora', icon: '💰', cor: '#f59e0b', desc: 'Salário' },
     { id: 5, nome: 'Juros Compostos', rota: 'TelaJurosCompostos', icon: '📈', cor: '#8b5cf6', desc: 'Investimentos' },
     { id: 6, nome: 'Calculadora PC', rota: 'TelaFontePC', icon: '📈', cor: '#8b5cf6', desc: 'Fonte PC' },
+    { id: 7, nome: 'Calculadora Impostos', rota: 'Telaimp', icon: '📈', cor: '#8b5cf6', desc: 'Fonte PC' },
+    { id: 8, nome: 'Calculadora Combustivel', rota: 'Telacumb', icon: '📈', cor: '#8b5cf6', desc: 'Fonte PC' },
   ]
 
   const navegar = (rota: string) => {
