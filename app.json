@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Albertool Tools",
-    "slug": "Albertool Tools",
+    "slug": "MaxToolsBr",
     "plugins": [
       "expo-notifications"
     ],
@@ -19,6 +19,7 @@
       "eas": {
         "projectId": "95bce435-04c2-4ada-b17e-92643a966a70"
       }
-    }
+    },
+    "owner": "albertaox"
   }
 }
