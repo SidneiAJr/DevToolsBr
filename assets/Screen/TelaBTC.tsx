@@ -18,6 +18,7 @@ const TelaBTC = () => {
   const [ultimaAtualizacao, setUltimaAtualizacao] = useState<string>('')
   const [ultimoPreco, setUltimoPreco] = useState<number | null>(null)
   const [notificacaoEnviada, setNotificacaoEnviada] = useState(false)
+  const [precos, setPrecos] = useState<{[key: string]: any} | null>(null)
 
   // Solicitar permissão ao abrir a tela
   useEffect(() => {
@@ -45,122 +46,118 @@ const TelaBTC = () => {
   const buscarPrecoBTC = async () => {
     setLoading(true)
     try {
-      const response = await fetch(
-        'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=brl'
-      )
-      const data = await response.json()
-      const novoPreco = data.bitcoin.brl
-      setPreco(novoPreco)
-      
-      // Formata a data/hora da atualização
-      const agora = new Date()
-      setUltimaAtualizacao(agora.toLocaleTimeString('pt-BR'))
-      
-      // Verificar se precisa enviar notificação
-      if (ultimoPreco !== null) {
-        const variacao = ((novoPreco - ultimoPreco) / ultimoPreco) * 100
+        const response = await fetch(
+            'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=brl'
+        )
+        const data = await response.json()
+        setPrecos(data)
+        setPreco(data.bitcoin.brl) // mantém o BTC como principal
         
-        // Se variou mais de 3%, envia notificação
-        if (Math.abs(variacao) >= 3) {
-          const direcao = variacao > 0 ? '🚀 subiu' : '📉 desceu'
-          await enviarNotificacao(
-            `💰 Bitcoin ${direcao} ${variacao.toFixed(1)}%`,
-            `BTC: R$ ${novoPreco.toLocaleString('pt-BR')}\nVariação: ${variacao.toFixed(1)}%`
-          )
-          setNotificacaoEnviada(true)
-          
-          // Resetar após 10 segundos
-          setTimeout(() => setNotificacaoEnviada(false), 10000)
-        }
-      }
-      
-      setUltimoPreco(novoPreco)
-      
+        const agora = new Date()
+        setUltimaAtualizacao(agora.toLocaleTimeString('pt-BR'))
+        
+        // Notificação a cada busca
+        await enviarNotificacao(
+            '💰 Atualização Cripto',
+            `BTC: R$ ${data.bitcoin.brl.toLocaleString('pt-BR')}\nETH: R$ ${data.ethereum.brl.toLocaleString('pt-BR')}\nSOL: R$ ${data.solana.brl.toLocaleString('pt-BR')}`
+        )
+        
+        setUltimoPreco(data.bitcoin.brl)
     } catch (error) {
-      console.error('Erro:', error)
-      alert('Erro ao buscar preço do BTC')
+        alert('Erro ao buscar preços')
     } finally {
-      setLoading(false)
+        setLoading(false)
     }
   }
 
-  // Busca automática a cada 30 segundos (opcional)
   useEffect(() => {
     const interval = setInterval(() => {
       if (!loading) {
         buscarPrecoBTC()
       }
-    }, 30000) // a cada 30 segundos
+    }, 15 * 60 * 1000) // a cada 30 segundos
     
     return () => clearInterval(interval)
   }, [loading, ultimoPreco])
 
   return (
     <FundoEconomico>  
-      <View style={styles.container}>
+     <View style={styles.container}>
         
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.emoji}>₿</Text>
-          <Text style={styles.titulo}>Bitcoin</Text>
-          <Text style={styles.subtitulo}>Cotação em tempo real</Text>
-        </View>
+    {/* Header */}
+    <View style={styles.header}>
+        <Text style={styles.emoji}>₿</Text>
+        <Text style={styles.titulo}>Bitcoin</Text>
+        <Text style={styles.subtitulo}>Cotação em tempo real</Text>
+    </View>
 
-        {/* Botão */}
-        <TouchableOpacity 
-          style={[styles.botao, loading && styles.botaoDisabled]} 
-          onPress={buscarPrecoBTC}
-          disabled={loading}
-        >
-          {loading ? (
+    {/* Botão */}
+    <TouchableOpacity 
+        style={[styles.botao, loading && styles.botaoDisabled]} 
+        onPress={buscarPrecoBTC}
+        disabled={loading}
+    >
+        {loading ? (
             <ActivityIndicator size="small" color="#fff" />
-          ) : (
+        ) : (
             <Text style={styles.botaoTexto}>Consultar cotação</Text>
-          )}
-        </TouchableOpacity>
+        )}
+    </TouchableOpacity>
 
-        {/* Resultado */}
-        {preco !== null && (
-          <View style={styles.card}>
+    {/* Resultado */}
+    {preco !== null && (
+        <View style={styles.card}>
             <Text style={styles.preco}>
-              R$ {preco.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                R$ {preco.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </Text>
             <Text style={styles.atualizacao}>
-              📅 Última atualização: {ultimaAtualizacao}
+                📅 Última atualização: {ultimaAtualizacao}
             </Text>
             
-            {/* Mostra variação se houver */}
+            {/* Variação BTC */}
             {ultimoPreco && preco !== ultimoPreco && (
-              <Text style={[
-                styles.variacao,
-                preco > ultimoPreco ? styles.variacaoPositiva : styles.variacaoNegativa
-              ]}>
-                {preco > ultimoPreco ? '▲' : '▼'} 
-                {((preco - ultimoPreco) / ultimoPreco * 100).toFixed(2)}%
-              </Text>
+                <Text style={[
+                    styles.variacao,
+                    preco > ultimoPreco ? styles.variacaoPositiva : styles.variacaoNegativa
+                ]}>
+                    {preco > ultimoPreco ? '▲' : '▼'} 
+                    {((preco - ultimoPreco) / ultimoPreco * 100).toFixed(2)}%
+                </Text>
             )}
-          </View>
-        )}
 
-        {/* Status da notificação */}
-        {notificacaoEnviada && (
-          <View style={styles.notificacaoStatus}>
+            {/* ETH e SOL */}
+            {precos && (
+                <View style={{marginTop: 15, width: '100%'}}>
+                    <Text style={{color: '#627eea', fontSize: 18, fontWeight: 'bold', textAlign: 'center'}}>
+                        ETH: R$ {precos.ethereum.brl.toLocaleString('pt-BR')}
+                    </Text>
+                    <Text style={{color: '#9945ff', fontSize: 18, fontWeight: 'bold', textAlign: 'center', marginTop: 8}}>
+                        SOL: R$ {precos.solana.brl.toLocaleString('pt-BR')}
+                    </Text>
+                </View>
+            )}
+        </View>
+    )}
+
+    {/* Status da notificação */}
+    {notificacaoEnviada && (
+        <View style={styles.notificacaoStatus}>
             <Text style={styles.notificacaoTexto}>
-              🔔 Notificação enviada!
+                🔔 Notificação enviada!
             </Text>
-          </View>
-        )}
+        </View>
+    )}
 
-        {/* Dicas */}
-        <Text style={styles.dica}>
-          💡 Dica: O app notifica quando Bitcoin varia mais de 3%
-        </Text>
-        <Text style={styles.dicaPequena}>
-          🔔 Busca automática a cada 30 segundos
-        </Text>
-        
-      </View>
-    </FundoEconomico>
+    {/* Dicas */}
+    <Text style={styles.dica}>
+        💡 Notifica BTC, ETH e SOL a cada atualização
+    </Text>
+    <Text style={styles.dicaPequena}>
+        🔔 Busca automática a cada 15 minutos
+    </Text>
+    
+</View>
+</FundoEconomico>
   )
 }
 
